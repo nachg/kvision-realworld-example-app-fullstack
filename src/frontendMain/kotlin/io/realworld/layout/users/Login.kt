@@ -5,10 +5,10 @@ import io.realworld.ConduitState
 import io.realworld.View
 import io.kvision.core.Container
 import io.kvision.core.onEvent
+import io.kvision.form.FormPanel
 import io.kvision.form.form
-import io.kvision.form.text.TextInput
-import io.kvision.form.text.TextInputType
-import io.kvision.form.text.textInput
+import io.kvision.form.formPanel
+import io.kvision.form.text.*
 import io.kvision.html.ButtonType
 import io.kvision.html.button
 import io.kvision.html.div
@@ -17,6 +17,12 @@ import io.kvision.html.h1
 import io.kvision.html.link
 import io.kvision.html.p
 import io.kvision.html.ul
+
+@kotlinx.serialization.Serializable
+data class LoginModel(
+    val email: String = "",
+    val password: String = ""
+)
 
 fun Container.loginPage(state: ConduitState) {
     div(className = "auth-page") {
@@ -30,9 +36,44 @@ fun Container.loginPage(state: ConduitState) {
                     if (!state.loginErrors.isNullOrEmpty()) {
                         ul(state.loginErrors, className = "error-messages")
                     }
-                    lateinit var emailInput: TextInput
-                    lateinit var passwordInput: TextInput
-                    form {
+
+                    formPanel {
+                        add(
+                            key = LoginModel::email,
+                            control = Text(label = "Email", type = TextInputType.EMAIL) {
+                                placeholder = "Email"
+                            },
+                            required = true,
+                            requiredMessage = "This field is required",
+                            validatorMessage = { "Enter more than 8 characters" }
+                        ){ (it.getValue()?.length ?: 0) >= 8 }
+
+                        add(
+                            key = LoginModel::password,
+                            control = Text(label = "Password", type = TextInputType.PASSWORD) {
+                                placeholder = "Password"
+                            },
+                            required = true,
+                            requiredMessage = "This field is required",
+                        )
+
+                        button(
+                            "Sign in",
+                            type = ButtonType.SUBMIT,
+                            className = "btn-lg pull-xs-right"
+                        )
+                    }.onEvent {
+                        submit = { ev ->
+                            ev.preventDefault()
+                            if(this.self.validate()) {
+                                this.self.getData().run {
+                                    ConduitManager.login(email, password)
+                                }
+                            }
+                        }
+                    }
+
+                    /*form {
                         fieldset(className = "form-group") {
                             emailInput =
                                 textInput(type = TextInputType.EMAIL, className = "form-control form-control-lg") {
@@ -55,7 +96,7 @@ fun Container.loginPage(state: ConduitState) {
                             ev.preventDefault()
                             ConduitManager.login(emailInput.value, passwordInput.value)
                         }
-                    }
+                    }*/
                 }
             }
         }

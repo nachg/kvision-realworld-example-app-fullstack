@@ -30,7 +30,9 @@ fun Container.homePage(state: ConduitState) {
                         }
                         pagination(state)
                     } else {
-                        div("No articles are here... yet.", className = "article-preview")
+                        div(className = "article-preview") {
+                            p("No articles are here... yet.")
+                        }
                     }
                 }
                 div(className = "col-md-3") {

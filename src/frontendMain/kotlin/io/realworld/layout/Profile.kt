@@ -56,7 +56,7 @@ fun Container.profilePage(state: ConduitState) {
                                     "ion-gear-a",
                                     separator = "&nbsp; ",
                                     className = "btn btn-sm btn-outline-secondary action-btn"
-                                )
+                                ).setAttribute("data-testid", "edit-settings")
                             }
                         }
                     }
@@ -95,7 +95,9 @@ fun Container.profilePage(state: ConduitState) {
                             }
                             pagination(state)
                         } else {
-                            div("No articles are here... yet.", className = "article-preview")
+                            div(className = "article-preview") {
+                                p("No articles are here... yet.")
+                            }
                         }
                     }
                 }

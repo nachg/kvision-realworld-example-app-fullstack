@@ -33,8 +33,9 @@ fun Container.headerNav(state: ConduitState) {
                                 "#${View.EDITOR.url}",
                                 "ion-compose",
                                 separator = "&nbsp;",
-                                className = state.editorLinkClassName
-                            )
+                                className = state.editorLinkClassName,
+
+                            ).setAttribute("data-testid", "newpost")
                         }
                         li(className = "nav-item") {
                             link(
@@ -43,7 +44,7 @@ fun Container.headerNav(state: ConduitState) {
                                 "ion-gear-a",
                                 separator = "&nbsp;",
                                 className = state.settingsLinkClassName
-                            )
+                            ).setAttribute("data-testid", "settings")
                         }
                         if (state.user.username != null) {
                             li(className = "nav-item") {
@@ -56,7 +57,7 @@ fun Container.headerNav(state: ConduitState) {
                                     if (!state.user.image.isNullOrBlank()) {
                                         image(state.user.image, state.user.username, className = "user-pic")
                                     }
-                                }
+                                }.setAttribute("data-testid", "username")
                             }
                         }
                     }

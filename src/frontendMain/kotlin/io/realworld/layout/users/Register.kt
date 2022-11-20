@@ -18,6 +18,12 @@ import io.kvision.html.link
 import io.kvision.html.p
 import io.kvision.html.ul
 
+data class RegisterModel(
+    val login: String = "",
+    val email: String = "",
+    val password: String = ""
+)
+
 fun Container.registerPage(state: ConduitState) {
     div(className = "auth-page") {
         div(className = "container page") {
